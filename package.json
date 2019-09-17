@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "downloadjs": "^1.4.7",
+    "ical-generator": "^1.8.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "pdfjs-dist": "^2.1.266",

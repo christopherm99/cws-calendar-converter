@@ -92,15 +92,18 @@
               </v-stepper-content>
 
               <v-stepper-content step="3">
-                <v-card
+                    <!-- <v-card
                   class="mb-5"
                   color="grey lighten-1"
                   height="200px"
-                ></v-card>
-                <v-btn color="primary" @click="progress = 1">
-                  Continue
-                </v-btn>
-                <v-btn text @click="progress = 2">Go Back</v-btn>
+                ></v-card> -->
+                    <!-- <v-btn color="primary" @click="auth">
+                  Sign in with Google
+                </v-btn> -->
+                    <v-btn text @click="ics">
+                      Convert to ICS
+                    </v-btn>
+                    <v-btn text @click="progress = 2">Go Back</v-btn>
               </v-stepper-content>
             </v-stepper-items>
           </v-flex>
@@ -122,6 +125,10 @@ import parseClasses from "./parseClasses";
 import parseColorMap from "./parseColorMap";
 import parseClassMap from "./parseClassMap";
 
+import cal from "ical-generator";
+import moment from "moment";
+import download from "downloadjs";
+
 export default {
   name: "App",
   data() {
@@ -131,7 +138,13 @@ export default {
       classes: [],
       classMap: {},
       classColorMap: {},
-      loading: false
+      loading: false,
+      ical: cal({
+        domain: "christophermilan.me",
+        name: "Commonwealth School Schedule",
+        url: "https://christophermilan.me/cws-calendar-converter",
+        timezone: "America/New_York"
+      })
     };
   },
   methods: {
@@ -157,6 +170,22 @@ export default {
           });
       });
       reader.readAsArrayBuffer(file);
+    },
+    auth() {},
+    ics() {
+      this.classes.forEach(meeting => {
+        this.ical.createEvent({
+          start: meeting.begin,
+          end: meeting.end,
+          description: meeting.teacher,
+          summary: meeting.class,
+          repeating: {
+            freq: "WEEKLY",
+            until: moment("May 28 2020")
+          }
+        });
+      });
+      download(this.ical.toString(), "schedule.ics", "text/calendar");
     }
   }
 };
