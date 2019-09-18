@@ -92,18 +92,18 @@
               </v-stepper-content>
 
               <v-stepper-content step="3">
-                    <!-- <v-card
-                  class="mb-5"
-                  color="grey lighten-1"
-                  height="200px"
-                ></v-card> -->
-                    <!-- <v-btn color="primary" @click="auth">
-                  Sign in with Google
-                </v-btn> -->
-                    <v-btn text @click="ics">
-                      Convert to ICS
-                    </v-btn>
-                    <v-btn text @click="progress = 2">Go Back</v-btn>
+                <!-- <v-card
+              class="mb-5"
+              color="grey lighten-1"
+              height="200px"
+            ></v-card> -->
+                <!-- <v-btn color="primary" @click="auth">
+              Sign in with Google
+            </v-btn> -->
+                <v-btn text @click="ics">
+                  Convert to iCalendar file"
+                </v-btn>
+                <v-btn text @click="progress = 2">Go Back</v-btn>
               </v-stepper-content>
             </v-stepper-items>
           </v-flex>
