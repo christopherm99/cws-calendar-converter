@@ -101,7 +101,10 @@
               Sign in with Google
             </v-btn> -->
                 <v-btn text @click="ics">
-                  Convert to iCalendar file"
+                  Convert to iCalendar file
+                </v-btn>
+                <v-btn text @click="google">
+                  Connect to Google
                 </v-btn>
                 <v-btn text @click="progress = 2">Go Back</v-btn>
               </v-stepper-content>
@@ -125,6 +128,8 @@ import parseClasses from "./parseClasses";
 import parseColorMap from "./parseColorMap";
 import parseClassMap from "./parseClassMap";
 
+import { /*sendReq,*/ createCalendar } from "./gapi";
+
 import cal from "ical-generator";
 import moment from "moment";
 import download from "downloadjs";
@@ -144,8 +149,26 @@ export default {
         name: "Commonwealth School Schedule",
         url: "https://christophermilan.me/cws-calendar-converter",
         timezone: "America/New_York"
-      })
+      }),
+      error: false,
+      gapi: {},
+      auth: { signIn: function() {} }
     };
+  },
+  mounted() {
+    this.$getGapiClient().then(gapi => {
+      this.gapi = gapi;
+      this.auth = gapi.auth2.getAuthInstance();
+      this.auth.isSignedIn.listen(success => {
+        if (success) {
+          console.log("Creating calendar");
+          createCalendar(gapi, "Test");
+          // sendReq(gapi, this.classes, "primary");
+        } else {
+          this.error = true;
+        }
+      });
+    });
   },
   methods: {
     onUpload(file) {
@@ -171,7 +194,9 @@ export default {
       });
       reader.readAsArrayBuffer(file);
     },
-    auth() {},
+    google() {
+      this.auth.signIn().then(console.log, console.error);
+    },
     ics() {
       this.classes.forEach(meeting => {
         this.ical.createEvent({
