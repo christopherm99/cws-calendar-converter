@@ -16,7 +16,7 @@
     "pdfjs-dist": "^2.1.266",
     "vue": "^2.6.10",
     "vue-gapi": "0.0.10",
-    "vuetify": "^2.0.0"
+    "vuetify": "^2.6.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
